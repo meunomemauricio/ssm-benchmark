@@ -1,0 +1,61 @@
+Bootstrap: docker
+From: pytorch/pytorch:2.2.1-cuda11.8-cudnn9-runtime
+
+%help
+    Singularity image for ssm-benchmark project, based on PyTorch CUDA docker.
+
+%files
+    ./accelerated-scan-0.1.2
+    ./configs
+    ./dataloaders
+    ./mamba-1.1.4
+    ./models
+    requirements.txt
+    train.py
+
+%environment
+    export PATH=/usr/local/bin:$PATH
+    export PYTHONUNBUFFERED=1
+    export LC_ALL=C.UTF-8
+    export LANG=C.UTF-8
+    export TORCH_HOME=/opt/torch_cache
+    export PYTHONPATH=/usr/local/lib/python3.11/site-packages:$PYTHONPATH
+
+%post
+    echo "=== Building 'ssm-benchmark' environment ==="
+    export DEBIAN_FRONTEND=noninteractive
+
+    apt-get update && apt-get install -y --no-install-recommends build-essential git && \
+        rm -rf /var/lib/apt/lists/*
+
+    echo "Upgrading build tools"
+    pip install --upgrade pip setuptools wheel
+
+    echo "Installing requirements"
+    pip install -r requirements.txt
+
+    echo "Installing repository's Mamba project."
+    pip install mamba-1.1.4/
+
+    echo "Installing repository's Accelerated Scan project."
+    pip install accelerated-scan-0.1.2/
+
+    echo "=== Environment setup complete ==="
+
+%runscript
+    python train.py $@
+    
+%test
+    echo "=== Running environment verification tests ==="
+    python - <<'EOF'
+import torch, hydra
+print("PyTorch version:", torch.__version__)
+print("CUDA version:", torch.version.cuda)
+print("cuDNN version:", torch.backends.cudnn.version())
+EOF
+    echo "=== Tests complete ==="
+
+%labels
+    Author Mauricio Dada
+    Version v0.1.0
+    Description "'ssm-benchmark' container."
