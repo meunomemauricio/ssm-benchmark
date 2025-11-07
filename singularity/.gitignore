@@ -1,2 +1,5 @@
 # Ignore built images
 *.sif
+
+# Ignore Slurm output files
+outputs/
