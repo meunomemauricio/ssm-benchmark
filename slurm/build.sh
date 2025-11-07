@@ -4,8 +4,8 @@
 #SBATCH --partition allgroups
 #SBATCH --time 01:00:00
 
-#SBATCH --mem 8G
-#SBATCH --cpus-per-task 4
+#SBATCH --mem 16G
+#SBATCH --cpus-per-task 2
 
 #SBATCH --job-name ssm-bench
 #SBATCH --mail-type ALL
