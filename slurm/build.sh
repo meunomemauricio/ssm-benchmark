@@ -3,7 +3,7 @@
 #SBATCH --ntasks 1
 #SBATCH --partition allgroups
 #SBATCH --time 01:00:00
-#SBATCH --mem 4G
+#SBATCH --mem 8G
 
 #SBATCH --job-name ssm-bench
 #SBATCH --mail-type ALL
