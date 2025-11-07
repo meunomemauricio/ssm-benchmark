@@ -37,8 +37,9 @@ From: pytorch/pytorch:2.2.1-cuda11.8-cudnn8-devel
     pip install "jaxlib==0.4.25+cuda11.cudnn86" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html 
 
     pip install -r requirements.txt
-    pip install mamba-1.1.4/
-    pip install accelerated-scan-0.1.2/
+
+    pip install mamba-1.1.4/ --no-build-isolation
+    pip install accelerated-scan-0.1.2/ --no-build-isolation
 
     echo "=== Environment setup complete ==="
 
