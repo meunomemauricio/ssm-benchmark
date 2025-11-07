@@ -49,7 +49,7 @@ From: pytorch/pytorch:2.2.1-cuda11.8-cudnn8-devel
 %test
     echo "=== Running environment verification tests ==="
     python - <<'EOF'
-import torch, hydra
+import torch
 print("PyTorch version:", torch.__version__)
 print("CUDA version:", torch.version.cuda)
 print("cuDNN version:", torch.backends.cudnn.version())

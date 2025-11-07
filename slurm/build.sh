@@ -2,9 +2,9 @@
 
 #SBATCH --ntasks 1
 #SBATCH --partition allgroups
-#SBATCH --time 01:00:00
+#SBATCH --time 00:30:00
 
-#SBATCH --mem 16G
+#SBATCH --mem 32G
 #SBATCH --cpus-per-task 2
 
 #SBATCH --job-name ssm-bench
