@@ -8,7 +8,6 @@
 #SBATCH --job-name ssm-bench
 #SBATCH --mail-type ALL
 
-#SBATCH --output outputs/%j/out.txt
-#SBATCH --error outputs/%j/err.txt
+#SBATCH --output outputs/%j.txt
 
-srun apptainer build --fakeroot ssm-bench.sif ssm-bench.def
+srun apptainer build --fakeroot singularity/ssm-bench.sif singularity/ssm-bench.def
