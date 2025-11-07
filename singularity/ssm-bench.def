@@ -1,5 +1,5 @@
 Bootstrap: docker
-From: pytorch/pytorch:2.2.1-cuda11.8-cudnn9-runtime
+From: pytorch/pytorch:2.2.1-cuda11.8-cudnn8-runtime
 
 %help
     Singularity image for ssm-benchmark project, based on PyTorch CUDA docker.
