@@ -28,16 +28,11 @@ From: pytorch/pytorch:2.2.1-cuda11.8-cudnn8-runtime
     apt-get update && apt-get install -y --no-install-recommends build-essential git && \
         rm -rf /var/lib/apt/lists/*
 
-    echo "Upgrading build tools"
     pip install --upgrade pip setuptools wheel
 
-    echo "Installing requirements"
+    pip install torch==2.2.1+cu118
     pip install -r requirements.txt
-
-    echo "Installing repository's Mamba project."
     pip install mamba-1.1.4/
-
-    echo "Installing repository's Accelerated Scan project."
     pip install accelerated-scan-0.1.2/
 
     echo "=== Environment setup complete ==="
