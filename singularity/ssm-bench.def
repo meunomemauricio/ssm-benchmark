@@ -28,7 +28,7 @@ From: pytorch/pytorch:2.2.1-cuda11.8-cudnn8-devel
     apt-get update && apt-get install -y --no-install-recommends build-essential git && \
         rm -rf /var/lib/apt/lists/*
 
-    pip install --upgrade pip setuptools wheel
+    pip install --upgrade pip setuptools wheel hatchling
 
     # Needs --no-build-isolation otherwise it fails installation
     pip install causal-conv1d==1.2.0.post1 --no-build-isolation
