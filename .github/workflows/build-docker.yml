@@ -2,10 +2,10 @@ name: Build project into Docker image
 
 on:
   # push:
-  #   branches: [ main ]
+  #   branches: [ master ]
   # TODO: Temporarily running on PRs
   pull_request:
-    branches: [main]
+    branches: [ master ]
 
 jobs:
   build:
