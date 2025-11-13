@@ -13,4 +13,4 @@
 
 #SBATCH --output outputs/install/%j.txt
 
-srun bash install-requirements.sh
+srun singularity exec singularity/python.sif bash install-requirements.sh
