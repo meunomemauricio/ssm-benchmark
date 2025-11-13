@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+python -m venv venv --prompt ssm-bench
+source venv/bin/activate
+
 pip install --upgrade pip setuptools wheel hatchling
 
 # Needs --no-build-isolation otherwise it fails installation
