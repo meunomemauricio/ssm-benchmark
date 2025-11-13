@@ -2,9 +2,9 @@
 
 #SBATCH --ntasks 1
 #SBATCH --partition allgroups
-#SBATCH --time 01:00:00
+#SBATCH --time 02:00:00
 
-#SBATCH --mem 8G
+#SBATCH --mem 16G
 #SBATCH --cpus-per-task 2
 #SBATCH --gres=gpu:rtx
 
@@ -13,4 +13,4 @@
 
 #SBATCH --output outputs/install/%j.txt
 
-srun singularity exec --nv singularity/torch.sif bash install-requirements.sh
+srun bash install-requirements.sh

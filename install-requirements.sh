@@ -6,6 +6,9 @@ source venv/bin/activate
 
 pip install --upgrade pip setuptools wheel hatchling
 
+# Install PyTorch from their registry
+pip install torch==2.2.1 torchvision==0.17.1 torchaudio==2.2.1 --index-url https://download.pytorch.org/whl/cu118
+
 # Needs --no-build-isolation otherwise it fails installation
 pip install causal-conv1d==1.2.0.post1 --no-build-isolation
 
