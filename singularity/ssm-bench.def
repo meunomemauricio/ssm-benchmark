@@ -10,6 +10,7 @@ From: pytorch/pytorch:2.2.1-cuda11.8-cudnn8-devel
     ./dataloaders
     ./mamba-1.1.4
     ./models
+    install-requirements.sh
     requirements.txt
     train.py
 
@@ -22,40 +23,14 @@ From: pytorch/pytorch:2.2.1-cuda11.8-cudnn8-devel
     export PYTHONPATH=/usr/local/lib/python3.11/site-packages:$PYTHONPATH
 
 %post
-    echo "=== Building 'ssm-benchmark' environment ==="
     export DEBIAN_FRONTEND=noninteractive
-
     apt-get update && apt-get install -y --no-install-recommends build-essential git && \
         rm -rf /var/lib/apt/lists/*
 
-    pip install --upgrade pip setuptools wheel hatchling
-
-    # Needs --no-build-isolation otherwise it fails installation
-    pip install causal-conv1d==1.2.0.post1 --no-build-isolation
-
-    # Needs to be installed from Google's own registry
-    pip install "jaxlib==0.4.25+cuda11.cudnn86" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html 
-
-    pip install -r requirements.txt
-
-    pip install mamba-1.1.4/ --no-build-isolation
-    pip install accelerated-scan-0.1.2/ --no-build-isolation
-
-    echo "=== Environment setup complete ==="
-
 %runscript
+    install-requirements.sh
     python train.py $@
     
-%test
-    echo "=== Running environment verification tests ==="
-    python - <<'EOF'
-import torch
-print("PyTorch version:", torch.__version__)
-print("CUDA version:", torch.version.cuda)
-print("cuDNN version:", torch.backends.cudnn.version())
-EOF
-    echo "=== Tests complete ==="
-
 %labels
     Author Mauricio Dada
     Version v0.1.0
