@@ -43,9 +43,6 @@ From: pytorch/pytorch:2.2.1-cuda11.8-cudnn8-devel
 
     echo "=== Environment setup complete ==="
 
-%runscript
-    python train.py $@
-    
 %test
     echo "=== Running environment verification tests ==="
     python - <<'EOF'
