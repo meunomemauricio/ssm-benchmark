@@ -12,4 +12,4 @@
 #SBATCH --output outputs/bench/cifar10-mamba/%j/slurm-out.txt
 #SBATCH --mail-type ALL
 
-srun singularity exec singularity/ssm-bench.sif python train.py --config cifar-10-mamba.yaml
+srun singularity exec --nv singularity/ssm-bench.sif python train.py --config cifar-10-mamba.yaml
