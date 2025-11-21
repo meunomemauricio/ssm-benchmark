@@ -2,7 +2,7 @@
 
 #SBATCH --ntasks 1
 #SBATCH --partition allgroups
-#SBATCH --time 00:10:00
+#SBATCH --time 24:00:00
 
 #SBATCH --mem 24G
 #SBATCH --cpus-per-task 4
