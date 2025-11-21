@@ -9,8 +9,7 @@
 #SBATCH --gres=gpu:rtx
 
 #SBATCH --job-name llm-ssm
-#SBATCH --output outputs/cifar10/S6/%j/slurm-out.txt
-#SBATCH --error outputs/cifar10/S6/%j/slurm-err.txt
+#SBATCH --output outputs/bench/cifar10-mamba/%j/slurm-out.txt
 #SBATCH --mail-type ALL
 
-srun singularity exec singularity/ssm-bench.sif python train.py cifar-10-mamba.yaml
+srun singularity exec singularity/ssm-bench.sif python train.py --config cifar-10-mamba.yaml
