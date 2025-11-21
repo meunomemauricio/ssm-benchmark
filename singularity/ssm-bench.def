@@ -17,7 +17,6 @@ From: pytorch/pytorch:2.2.1-cuda11.8-cudnn8-devel
     export LC_ALL=C.UTF-8
     export LANG=C.UTF-8
     export TORCH_HOME=/opt/torch_cache
-    export PYTHONPATH=/usr/local/lib/python3.11/site-packages:$PYTHONPATH
 
 %post
     echo "=== Building 'ssm-benchmark' environment ==="
@@ -30,8 +29,7 @@ From: pytorch/pytorch:2.2.1-cuda11.8-cudnn8-devel
 
     # Needs --no-build-isolation otherwise it fails installation
     pip install accelerated-scan==0.2.0 --no-build-isolation
-    pip install causal-conv1d==1.2.0.post1 --no-build-isolation
-    pip install mamba-ssm==2.2.5 --no-build-isolation
+    pip install mamba-ssm[causal-conv1d]==2.2.5 --no-build-isolation
 
     # Needs to be installed from Google's own registry
     pip install "jaxlib==0.4.25+cuda11.cudnn86" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html 
@@ -43,10 +41,29 @@ From: pytorch/pytorch:2.2.1-cuda11.8-cudnn8-devel
 %test
     echo "=== Running environment verification tests ==="
     python - <<'EOF'
-import torch
-print("PyTorch version:", torch.__version__)
-print("CUDA version:", torch.version.cuda)
-print("cuDNN version:", torch.backends.cudnn.version())
+import torch, sys
+
+print("Python:", sys.version)
+print("PyTorch:", torch.__version__)
+print("CUDA:", torch.version.cuda)
+print("cuDNN:", torch.backends.cudnn.version())
+
+print("\n--- causal-conv1d sanity check ---")
+try:
+    import causal_conv1d
+    print("causal_conv1d version:", getattr(causal_conv1d, "__version__", "unknown"))
+    print("causal_conv1d file:", causal_conv1d.__file__)
+    from causal_conv1d import causal_conv1d_cuda
+    print("causal_conv1d_cuda object:", causal_conv1d_cuda)
+except Exception as e:
+    print("ERROR importing causal-conv1d:", e)
+
+print("\n--- mamba-ssm import test ---")
+try:
+    import mamba_ssm
+    print("mamba_ssm imported successfully")
+except Exception as e:
+    print("ERROR importing mamba_ssm:", e)
 EOF
     echo "=== Tests complete ==="
 
