@@ -1,0 +1,74 @@
+Bootstrap: docker
+From: pytorch/pytorch:2.2.1-cuda11.8-cudnn8-devel
+
+%help
+    Singularity image for ssm-benchmark project, based on PyTorch CUDA docker.
+
+%files
+    ./configs
+    ./dataloaders
+    ./models
+    requirements.txt
+    train.py
+
+%environment
+    export PATH=/usr/local/bin:$PATH
+    export PYTHONUNBUFFERED=1
+    export LC_ALL=C.UTF-8
+    export LANG=C.UTF-8
+    export TORCH_HOME=/opt/torch_cache
+
+%post
+    echo "=== Building 'ssm-benchmark' environment ==="
+    export DEBIAN_FRONTEND=noninteractive
+
+    apt-get update && apt-get install -y --no-install-recommends build-essential git && \
+        rm -rf /var/lib/apt/lists/*
+
+    pip install --upgrade pip setuptools wheel hatchling
+
+    # Needs --no-build-isolation otherwise it fails installation
+    pip install accelerated-scan==0.2.0 --no-build-isolation
+    pip install mamba-ssm[causal-conv1d]==2.2.5 --no-build-isolation
+
+    # Needs to be installed from Google's own registry
+    pip install "jaxlib==0.4.25+cuda11.cudnn86" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html 
+
+    pip install -r requirements.txt
+
+    echo "=== Environment setup complete ==="
+
+%test
+    echo "=== Running environment verification tests ==="
+    python - <<'EOF'
+import torch, sys
+
+print("Python:", sys.version)
+print("PyTorch:", torch.__version__)
+print("CUDA:", torch.version.cuda)
+print("cuDNN:", torch.backends.cudnn.version())
+
+print("\n--- causal-conv1d sanity check ---")
+try:
+    import causal_conv1d
+    print("causal_conv1d version:", getattr(causal_conv1d, "__version__", "unknown"))
+    print("causal_conv1d file:", causal_conv1d.__file__)
+    from causal_conv1d import causal_conv1d_cuda
+    print("causal_conv1d_cuda object:", causal_conv1d_cuda)
+except Exception as e:
+    print("ERROR importing causal-conv1d:", e)
+
+print("\n--- mamba-ssm import test ---")
+try:
+    import mamba_ssm
+    print("mamba_ssm imported successfully")
+except Exception as e:
+    print("ERROR importing mamba_ssm:", e)
+EOF
+    echo "=== Tests complete ==="
+
+%labels
+    Author Mauricio Dada
+    Version v0.1.0
+    Description "'ssm-benchmark' container."
+    
